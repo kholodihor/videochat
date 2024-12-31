@@ -15,6 +15,7 @@ interface SocketContextType {
   handleJoinCall: (ongoingCall: OngoingCall) => void
   endCall: () => void
   rejectCall: () => void
+  peer: PeerData | null
 }
 
 export const SocketContext = createContext<SocketContextType | null>(null);
@@ -290,6 +291,7 @@ export const SocketContextProvider = ({ children }: { children: React.ReactNode 
 
   return (
     <SocketContext.Provider value={{
+      peer,
       onlineUsers,
       handleCall,
       ongoingCall,

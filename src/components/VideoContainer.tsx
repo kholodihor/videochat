@@ -4,10 +4,9 @@ import { useEffect, useRef } from "react"
 interface IVideoContainerProps {
   stream: MediaStream,
   isLocalStream?: boolean,
-  isOnCall?: boolean
 }
 
-const VideoContainer = ({ stream, isLocalStream, isOnCall }: IVideoContainerProps) => {
+const VideoContainer = ({ stream, isLocalStream }: IVideoContainerProps) => {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -16,9 +15,8 @@ const VideoContainer = ({ stream, isLocalStream, isOnCall }: IVideoContainerProp
     }
   }, [stream])
 
-  console.log(isLocalStream, isOnCall)
   return (
-    <video className={cn("relative rounded border w-[800px]", isLocalStream && isOnCall && "w-[200px] h-auto absolute border-2 border-white")} ref={videoRef} autoPlay playsInline muted={isLocalStream} />
+    <video className={cn("relative rounded border w-[800px]")} ref={videoRef} autoPlay playsInline muted={isLocalStream} />
   )
 }
 

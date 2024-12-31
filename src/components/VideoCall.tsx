@@ -42,19 +42,21 @@ const VideoCall = () => {
     [localStream],
   )
 
+
   return (
-    <>
-      {localStream &&
-        <>
-          <VideoContainer stream={localStream} isLocalStream={true} isOnCall={true} />
+    <div>
+      <div className="relative max-w-[800px] mx-auto">
+        {localStream && <>
+          <VideoContainer stream={localStream} isLocalStream={true} />
           <div className="flex gap-4 items-center justify-center mt-8">
             <Button variant={'ghost'} onClick={toggleMicrophone}>{isMicOn ? <MdMicOff size={24} /> : <MdMic size={24} />}</Button>
             <Button onClick={endCall} className="px-4 bg-rose-500 text-white hover:bg-rose-600">End Call</Button>
             <Button variant={'ghost'} onClick={toggleCamera}>{isVideoOn ? <MdVideocamOff size={24} /> : <MdVideocam size={24} />}</Button>
           </div>
-        </>
-      }
-    </>
+        </>}
+      </div>
+
+    </div>
   )
 }
 
