@@ -1,6 +1,7 @@
-import { createServer } from "node:http";
 import next from "next";
+import { createServer } from "node:http";
 import { Server } from "socket.io";
+
 import onCall from "./src/socket-events/onCall.js";
 // import onWebrtcSignal from "./src/socket-events/onWebrtcSignal.js";
 
@@ -11,21 +12,20 @@ const port = process.env.PORT || 3000;
 const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
 
-export let io;
+const httpServer = createServer(handler);
+const io = new Server(httpServer);
+export { io };
 
 app.prepare().then(() => {
-  const httpServer = createServer(handler);
-
-  io = new Server(httpServer);
   let onlineUsers = [];
 
   io.on("connection", (socket) => {
     socket.on("new-user-joined", (clerkUser) => {
-      if (clerkUser && !onlineUsers.some((user) => user?.userId === clerkUser.id)) {
+      if (clerkUser && !onlineUsers.some(user => user?.userId === clerkUser.id)) {
         onlineUsers.push({
           userId: clerkUser.id,
           socketId: socket.id,
-          profile: clerkUser
+          profile: clerkUser,
         });
         io.emit("online-users", onlineUsers);
       }
@@ -35,24 +35,25 @@ app.prepare().then(() => {
       onlineUsers = onlineUsers.filter(user => user.socketId !== socket.id);
       io.emit("online-users", onlineUsers);
     });
-    
-    socket.on("call-user", (participants) => onCall(participants));
+
+    socket.on("call-user", participants => onCall(participants));
 
     socket.on("wbrtc:signal", ({ sdp, ongoingCall, isCaller }) => {
-      const targetUser = onlineUsers.find(u => 
-        isCaller ? u.userId === ongoingCall.participants.callee.userId 
-                : u.userId === ongoingCall.participants.caller.userId
+      const targetUser = onlineUsers.find(u =>
+        isCaller
+          ? u.userId === ongoingCall.participants.callee.userId
+          : u.userId === ongoingCall.participants.caller.userId,
       );
-      
+
       if (targetUser) {
         io.to(targetUser.socketId).emit("wbrtc:signal", { sdp, ongoingCall, isCaller });
       }
     });
 
     socket.on("join-call", ({ callData, user }) => {
-      const targetUser = onlineUsers.find(u => 
-        u.userId === callData.participants.caller.userId || 
-        u.userId === callData.participants.callee.userId
+      const targetUser = onlineUsers.find(u =>
+        u.userId === callData.participants.caller.userId
+        || u.userId === callData.participants.callee.userId,
       );
       if (targetUser) {
         io.to(targetUser.socketId).emit("join-call", { callData, user });
@@ -60,8 +61,8 @@ app.prepare().then(() => {
     });
 
     socket.on("call-rejected", (callData) => {
-      const targetUser = onlineUsers.find(u => 
-        u.userId === callData.participants.caller.userId
+      const targetUser = onlineUsers.find(u =>
+        u.userId === callData.participants.caller.userId,
       );
       if (targetUser) {
         io.to(targetUser.socketId).emit("call-rejected", callData);
@@ -71,10 +72,10 @@ app.prepare().then(() => {
     socket.on("call-ended", (callData) => {
       const participants = [
         callData.participants.caller.userId,
-        callData.participants.callee.userId
+        callData.participants.callee.userId,
       ];
-      
-      onlineUsers.forEach(user => {
+
+      onlineUsers.forEach((user) => {
         if (participants.includes(user.userId)) {
           io.to(user.socketId).emit("call-ended", callData);
         }

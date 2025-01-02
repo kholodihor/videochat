@@ -1,9 +1,9 @@
-import { io } from '../../server.js'
+import { io } from "../../server.js";
 
-const onCall = async(participants) => {
-  if(participants.callee.socketId){
-    io.to(participants.callee.socketId).emit('call-user', { participants, isRinging: true })
+async function onCall(participants) {
+  if (participants.callee.socketId) {
+    io.to(participants.callee.socketId).emit("call-user", { participants, isRinging: true });
   }
 }
 
-export default onCall
+export default onCall;

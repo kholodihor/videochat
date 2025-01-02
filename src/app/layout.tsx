@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
-import { ClerkProvider } from '@clerk/nextjs'
+
+import { ClerkProvider } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
+
 import "./globals.css";
-import { Navbar } from "@/components/ui/layout/NavBar";
+
+import { Toaster } from "sonner";
+
 import { Container } from "@/components/ui/layout/Container";
-import { SocketContextProvider } from '@/context/SocketContext'
-import { Toaster } from 'sonner'
+import { Navbar } from "@/components/ui/layout/NavBar";
+import { SocketContextProvider } from "@/context/SocketContext";
 import { cn } from "@/lib/utils";
 
 const geistSans = Geist({
@@ -31,7 +35,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={cn(geistSans.variable, geistMono.variable, 'antialiased relative overflow-x-hidden')}>
+        <body className={cn(geistSans.variable, geistMono.variable, "antialiased relative overflow-x-hidden")}>
           <SocketContextProvider>
             <main className="flex min-h-screen flex-col bg-secondary">
               <Navbar />
