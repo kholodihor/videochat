@@ -2,13 +2,10 @@ import next from "next";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
 
-import onCall from "./src/socket-events/onCall.js";
-// import onWebrtcSignal from "./src/socket-events/onWebrtcSignal.js";
-
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
 const port = process.env.PORT || 3000;
-// when using middleware `hostname` and `port` must be provided below
+
 const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
 
@@ -36,7 +33,11 @@ app.prepare().then(() => {
       io.emit("online-users", onlineUsers);
     });
 
-    socket.on("call-user", participants => onCall(participants));
+    socket.on("call-user", (participants) => {
+      if (participants.callee.socketId) {
+        io.to(participants.callee.socketId).emit("call-user", { participants, isRinging: true });
+      }
+    });
 
     socket.on("wbrtc:signal", ({ sdp, ongoingCall, isCaller }) => {
       const targetUser = onlineUsers.find(u =>

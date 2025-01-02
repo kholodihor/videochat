@@ -54,7 +54,7 @@ export function SocketContextProvider({ children }: { children: React.ReactNode 
       return stream;
     }
     catch (error) {
-      console.log("failed to get media stream", error);
+      console.error("failed to get media stream", error);
       setLocalStream(null);
       return null;
     }
@@ -198,7 +198,7 @@ export function SocketContextProvider({ children }: { children: React.ReactNode 
     if (!user?.id)
       return;
 
-    const socket = io("https://videochat-d8hh.onrender.com", {
+    const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL, {
       query: {
         userId: user.id,
       },

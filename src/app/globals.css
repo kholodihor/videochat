@@ -62,6 +62,10 @@ body {
   }
 }
 
+.mirror-mode {
+  transform: scaleX(-1);
+}
+
 @layer base {
   * {
     @apply border-border;

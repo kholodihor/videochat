@@ -4,10 +4,7 @@ import VideoCall from "@/components/VideoCall";
 
 export default function Home() {
   return (
-    <div className="grid min-h-screen
-    grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20
-    font-[family-name:var(--font-geist-sans)]"
-    >
+    <div className="flex min-h-screen flex-col items-center justify-between gap-8 bg-gradient-to-b from-slate-50 to-slate-100 p-4 md:p-8">
       <OnlineUsersList />
       <CallNotification />
       <VideoCall />

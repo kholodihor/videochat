@@ -17,7 +17,17 @@ function VideoContainer({ stream, isLocalStream }: IVideoContainerProps) {
   }, [stream]);
 
   return (
-    <video className={cn("relative rounded border w-[800px]")} ref={videoRef} autoPlay playsInline muted={isLocalStream} />
+    <video
+      className={cn(
+        "aspect-video w-full rounded-2xl border bg-slate-100 shadow-lg",
+        "transition-all duration-300",
+        isLocalStream ? "mirror-mode" : "",
+      )}
+      ref={videoRef}
+      autoPlay
+      playsInline
+      muted={isLocalStream}
+    />
   );
 }
 
