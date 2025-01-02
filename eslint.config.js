@@ -20,12 +20,17 @@ export default antfu(
       "no-console": ["warn"],
       "antfu/no-top-level-await": ["off"],
       "node/prefer-global/process": ["off"],
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
       "perfectionist/sort-imports": ["error", {
         tsconfigRootDir: ".",
       }],
     },
   },
   ...compat.config({
-    extends: ["plugin:tailwindcss/recommended"],
+    extends: [
+      "plugin:tailwindcss/recommended",
+      "plugin:react-hooks/recommended",
+    ],
   }),
 );
