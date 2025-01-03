@@ -7,8 +7,8 @@ import "./globals.css";
 
 import { Toaster } from "sonner";
 
-import { Container } from "@/components/ui/layout/Container";
-import { Navbar } from "@/components/ui/layout/NavBar";
+import { Container } from "@/components/layout/container";
+import { Navbar } from "@/components/layout/navbar";
 import { SocketContextProvider } from "@/context/SocketContext";
 import { cn } from "@/lib/utils";
 

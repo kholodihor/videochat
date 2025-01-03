@@ -5,7 +5,7 @@ import { MdCall, MdCallEnd } from "react-icons/md";
 
 import { useSocket } from "@/context/SocketContext";
 
-import Avatar from "./Avatar";
+import Avatar from "./avatar";
 import { Button } from "./ui/button";
 
 function CallNotification() {
